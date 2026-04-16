@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bolt's Workshop — Build Robot Friends!</title>
+  <meta name="description" content="Help a cute lonely robot named Bolt explore an old workshop, build machines, and create robot friends!">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="game-container">
+
+    <!-- ===== INTRO SCREEN ===== -->
+    <div id="intro-screen">
+      <div class="stars-bg"></div>
+      <div class="intro-content">
+        <div class="intro-logo">
+          <span class="logo-icon">⚡</span>
+          <h1>Bolt's Workshop</h1>
+          <p class="subtitle">A Little Robot's Big Adventure</p>
+        </div>
+        <div class="intro-bolt-wrapper">
+          <div class="robot-char intro-robot" id="intro-bolt">
+            <div class="antenna"><div class="antenna-stick"></div><div class="antenna-ball"></div></div>
+            <div class="r-head">
+              <div class="r-eye left"><div class="pupil"></div><div class="shine"></div></div>
+              <div class="r-eye right"><div class="pupil"></div><div class="shine"></div></div>
+              <div class="r-blush left"></div>
+              <div class="r-blush right"></div>
+              <div class="r-mouth"></div>
+            </div>
+            <div class="r-body"><div class="r-heart">♥</div></div>
+            <div class="r-arm left-arm"></div>
+            <div class="r-arm right-arm"></div>
+            <div class="r-leg left-leg"></div>
+            <div class="r-leg right-leg"></div>
+          </div>
+          <div class="intro-sparkles">
+            <span class="sparkle s1">✦</span>
+            <span class="sparkle s2">✧</span>
+            <span class="sparkle s3">✦</span>
+            <span class="sparkle s4">⋆</span>
+          </div>
+        </div>
+        <div id="story-text" class="story-text"></div>
+        <button id="start-btn" class="btn-glow" style="display:none;">
+          <span>⚡ Start Building!</span>
+        </button>
+        <div class="intro-instructions" style="display:none;" id="intro-instructions">
+          <p>🖱️ <strong>Click</strong> to move Bolt &nbsp;|&nbsp; ⚙️ Walk near parts to collect &nbsp;|&nbsp; 🔧 Click stations to build</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== HUD ===== -->
+    <div id="hud" class="hidden">
+      <div class="hud-left">
+        <div class="hud-item" id="timer-display">
+          <div class="hud-icon">⏱️</div>
+          <span id="timer-value">2:00</span>
+        </div>
+      </div>
+      <div class="hud-center">
+        <div class="hud-item" id="score-display">
+          <div class="hud-icon">⭐</div>
+          <span id="score-value">0</span>
+          <span class="hud-label">pts</span>
+        </div>
+      </div>
+      <div class="hud-right">
+        <div class="hud-item" id="friends-display">
+          <div class="hud-icon">🤖</div>
+          <span id="friends-value">0</span>
+        </div>
+        <div class="hud-inventory" id="inventory-display"></div>
+      </div>
+    </div>
+
+    <!-- ===== NOTIFICATIONS ===== -->
+    <div id="notifications"></div>
+
+    <!-- ===== GAME VIEWPORT ===== -->
+    <div id="viewport" class="hidden">
+      <div id="world">
+        <!-- Background layers (parallax) -->
+        <div class="bg-layer bg-far"></div>
+        <div class="bg-layer bg-mid"></div>
+        <div class="bg-layer bg-near"></div>
+
+        <!-- Ground -->
+        <div id="ground"></div>
+
+        <!-- Zone gates -->
+        <div class="zone-gate" id="gate-2" style="left:1480px;">
+          <div class="gate-door"></div>
+          <div class="gate-lock">🔒</div>
+          <div class="gate-label">Zone 2</div>
+        </div>
+        <div class="zone-gate" id="gate-3" style="left:2980px;">
+          <div class="gate-door"></div>
+          <div class="gate-lock">🔒</div>
+          <div class="gate-label">Zone 3</div>
+        </div>
+
+        <!-- Build stations -->
+        <div class="build-station" id="station-0" data-station="0" style="left:700px;">
+          <div class="station-base"></div>
+          <div class="station-sign">🔧 Spark Welder</div>
+          <div class="station-prompt hidden">Click!</div>
+          <div class="station-machine hidden"></div>
+        </div>
+        <div class="build-station" id="station-1" data-station="1" style="left:2100px;">
+          <div class="station-base"></div>
+          <div class="station-sign">🔧 Gyro Assembler</div>
+          <div class="station-prompt hidden">Click!</div>
+          <div class="station-machine hidden"></div>
+        </div>
+        <div class="build-station" id="station-2" data-station="2" style="left:3600px;">
+          <div class="station-base"></div>
+          <div class="station-sign">🔧 Quantum Fabricator</div>
+          <div class="station-prompt hidden">Click!</div>
+          <div class="station-machine hidden"></div>
+        </div>
+
+        <!-- Bolt character -->
+        <div id="bolt" class="robot-char">
+          <div class="speech-bubble hidden" id="bolt-speech"></div>
+          <div class="antenna"><div class="antenna-stick"></div><div class="antenna-ball"></div></div>
+          <div class="r-head">
+            <div class="r-eye left"><div class="pupil"></div><div class="shine"></div></div>
+            <div class="r-eye right"><div class="pupil"></div><div class="shine"></div></div>
+            <div class="r-blush left"></div>
+            <div class="r-blush right"></div>
+            <div class="r-mouth"></div>
+          </div>
+          <div class="r-body"><div class="r-heart">♥</div></div>
+          <div class="r-arm left-arm"></div>
+          <div class="r-arm right-arm"></div>
+          <div class="r-leg left-leg"></div>
+          <div class="r-leg right-leg"></div>
+        </div>
+
+        <!-- Dynamic containers -->
+        <div id="parts-container"></div>
+        <div id="friends-container"></div>
+        <div id="effects-container"></div>
+      </div>
+
+      <!-- Arrow hints -->
+      <div class="explore-arrow left-arrow hidden" id="arrow-left">◀</div>
+      <div class="explore-arrow right-arrow hidden" id="arrow-right">▶</div>
+    </div>
+
+    <!-- ===== BUILD PANEL ===== -->
+    <div id="build-panel" class="hidden">
+      <div class="panel-overlay"></div>
+      <div class="panel-content">
+        <button id="close-panel-btn" class="panel-close">✕</button>
+        <h2 id="machine-name">Machine Name</h2>
+        <p id="machine-desc" class="machine-desc"></p>
+        <div id="blueprint-display" class="blueprint-box"></div>
+        <div id="parts-needed" class="parts-grid"></div>
+        <button id="build-btn" class="btn-glow build-btn" disabled>
+          <span>🔨 Build Machine</span>
+        </button>
+        <p class="panel-hint" id="panel-hint">Collect parts from the workshop!</p>
+      </div>
+    </div>
+
+    <!-- ===== GAME OVER SCREEN ===== -->
+    <div id="game-over-screen" class="hidden">
+      <div class="gameover-overlay"></div>
+      <div class="gameover-content">
+        <h1 class="gameover-title">Time's Up!</h1>
+        <div class="gameover-bolt">
+          <div class="robot-char small-robot">
+            <div class="antenna"><div class="antenna-stick"></div><div class="antenna-ball"></div></div>
+            <div class="r-head">
+              <div class="r-eye left"><div class="pupil"></div><div class="shine"></div></div>
+              <div class="r-eye right"><div class="pupil"></div><div class="shine"></div></div>
+              <div class="r-blush left"></div>
+              <div class="r-blush right"></div>
+              <div class="r-mouth smile"></div>
+            </div>
+            <div class="r-body"><div class="r-heart">♥</div></div>
+            <div class="r-arm left-arm wave"></div>
+            <div class="r-arm right-arm"></div>
+            <div class="r-leg left-leg"></div>
+            <div class="r-leg right-leg"></div>
+          </div>
+        </div>
+        <div id="star-rating" class="star-rating"></div>
+        <div class="score-reveal">
+          <div class="score-label">Final Score</div>
+          <div id="final-score" class="final-score-num">0</div>
+        </div>
+        <div id="final-friends-text" class="friends-text"></div>
+        <div id="friends-gallery" class="friends-gallery"></div>
+        <button id="replay-btn" class="btn-glow">
+          <span>🔄 Play Again!</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/game.js"></script>
+</body>
+</html>
