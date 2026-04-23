@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bolt's Workshop — Build Robot Friends!</title>
-  <meta name="description" content="Help a cute lonely robot named Bolt explore an old workshop, build machines, and create robot friends!">
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
+  <title>Bolt's Workshop</title>
+  <meta name="description"
+    content="Help Bolt the robot explore workshop, collect bolts, unlock gates, and discover unique robot friends! A cute anime-inspired adventure game.">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
   <div id="game-container">
 
@@ -18,19 +22,30 @@
         <div class="intro-logo">
           <span class="logo-icon">⚡</span>
           <h1>Bolt's Workshop</h1>
-          <p class="subtitle">A Little Robot's Big Adventure</p>
+
         </div>
         <div class="intro-bolt-wrapper">
           <div class="robot-char intro-robot" id="intro-bolt">
-            <div class="antenna"><div class="antenna-stick"></div><div class="antenna-ball"></div></div>
+            <div class="antenna">
+              <div class="antenna-stick"></div>
+              <div class="antenna-ball"></div>
+            </div>
             <div class="r-head">
-              <div class="r-eye left"><div class="pupil"></div><div class="shine"></div></div>
-              <div class="r-eye right"><div class="pupil"></div><div class="shine"></div></div>
+              <div class="r-eye left">
+                <div class="pupil"></div>
+                <div class="shine"></div>
+              </div>
+              <div class="r-eye right">
+                <div class="pupil"></div>
+                <div class="shine"></div>
+              </div>
               <div class="r-blush left"></div>
               <div class="r-blush right"></div>
               <div class="r-mouth"></div>
             </div>
-            <div class="r-body"><div class="r-heart">♥</div></div>
+            <div class="r-body">
+              <div class="r-heart">♥</div>
+            </div>
             <div class="r-arm left-arm"></div>
             <div class="r-arm right-arm"></div>
             <div class="r-leg left-leg"></div>
@@ -44,12 +59,28 @@
           </div>
         </div>
         <div id="story-text" class="story-text"></div>
-        <button id="start-btn" class="btn-glow" style="display:none;">
-          <span>⚡ Start Building!</span>
-        </button>
-        <div class="intro-instructions" style="display:none;" id="intro-instructions">
-          <p>🖱️ <strong>Click</strong> to move Bolt &nbsp;|&nbsp; ⚙️ Walk near parts to collect &nbsp;|&nbsp; 🔧 Click stations to build</p>
+        <div class="intro-buttons" id="intro-buttons" style="display:none;">
+          <button id="start-btn" class="btn-glow">
+            <span>⚡ Start Building!</span>
+          </button>
+          <button id="secrets-btn" class="btn-secondary">
+            <span>🔮 Secret Robots Guide</span>
+          </button>
         </div>
+        <div class="intro-instructions" style="display:none;" id="intro-instructions">
+          <p>👆 Tap/Click to move · 🔩 Collect bolts · 🔓 Unlock gates · 🤖 Build robots!</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== SECRET ROBOTS MODAL ===== -->
+    <div id="secrets-modal" class="hidden">
+      <div class="modal-overlay"></div>
+      <div class="modal-content">
+        <button id="close-secrets-btn" class="modal-close">✕</button>
+        <h2>🔮 Secret Robots</h2>
+        <p class="modal-subtitle">Complete special conditions to unlock legendary robots with unique abilities!</p>
+        <div id="secrets-list" class="secrets-list"></div>
       </div>
     </div>
 
@@ -60,91 +91,97 @@
           <div class="hud-icon">⏱️</div>
           <span id="timer-value">2:00</span>
         </div>
+        <div class="hud-item" id="level-display">
+          <div class="hud-icon">🏭</div>
+          <span id="level-value">Floor 1</span>
+        </div>
       </div>
       <div class="hud-center">
         <div class="hud-item" id="score-display">
           <div class="hud-icon">⭐</div>
           <span id="score-value">0</span>
-          <span class="hud-label">pts</span>
         </div>
       </div>
       <div class="hud-right">
-        <div class="hud-item" id="friends-display">
-          <div class="hud-icon">🤖</div>
-          <span id="friends-value">0</span>
+        <div class="hud-item" id="bolts-display">
+          <div class="hud-icon">🔩</div>
+          <span id="bolts-value">0</span>
         </div>
-        <div class="hud-inventory" id="inventory-display"></div>
+        <div class="hud-item" id="robots-display">
+          <div class="hud-icon">🤖</div>
+          <span id="robots-value">0</span>
+        </div>
       </div>
     </div>
 
     <!-- ===== NOTIFICATIONS ===== -->
     <div id="notifications"></div>
 
+    <!-- ===== POWERS HUD ===== -->
+    <div id="powers-hud" class="hidden"></div>
+
     <!-- ===== GAME VIEWPORT ===== -->
     <div id="viewport" class="hidden">
       <div id="world">
-        <!-- Background layers (parallax) -->
-        <div class="bg-layer bg-far"></div>
-        <div class="bg-layer bg-mid"></div>
-        <div class="bg-layer bg-near"></div>
-
-        <!-- Ground -->
+        <div class="bg-layer bg-far" id="bg-far"></div>
+        <div class="bg-layer bg-mid" id="bg-mid"></div>
+        <div class="bg-layer bg-near" id="bg-near"></div>
         <div id="ground"></div>
-
-        <!-- Zone gates -->
-        <div class="zone-gate" id="gate-2" style="left:1480px;">
-          <div class="gate-door"></div>
-          <div class="gate-lock">🔒</div>
-          <div class="gate-label">Zone 2</div>
-        </div>
-        <div class="zone-gate" id="gate-3" style="left:2980px;">
-          <div class="gate-door"></div>
-          <div class="gate-lock">🔒</div>
-          <div class="gate-label">Zone 3</div>
-        </div>
-
-        <!-- Build stations -->
-        <div class="build-station" id="station-0" data-station="0" style="left:700px;">
-          <div class="station-base"></div>
-          <div class="station-sign">🔧 Spark Welder</div>
-          <div class="station-prompt hidden">Click!</div>
-          <div class="station-machine hidden"></div>
-        </div>
-        <div class="build-station" id="station-1" data-station="1" style="left:2100px;">
-          <div class="station-base"></div>
-          <div class="station-sign">🔧 Gyro Assembler</div>
-          <div class="station-prompt hidden">Click!</div>
-          <div class="station-machine hidden"></div>
-        </div>
-        <div class="build-station" id="station-2" data-station="2" style="left:3600px;">
-          <div class="station-base"></div>
-          <div class="station-sign">🔧 Quantum Fabricator</div>
-          <div class="station-prompt hidden">Click!</div>
-          <div class="station-machine hidden"></div>
-        </div>
+        <div id="decorations-container"></div>
+        <div id="gates-container"></div>
+        <div id="station-container"></div>
 
         <!-- Bolt character -->
         <div id="bolt" class="robot-char">
           <div class="speech-bubble hidden" id="bolt-speech"></div>
-          <div class="antenna"><div class="antenna-stick"></div><div class="antenna-ball"></div></div>
+          <div class="antenna">
+            <div class="antenna-stick"></div>
+            <div class="antenna-ball"></div>
+          </div>
           <div class="r-head">
-            <div class="r-eye left"><div class="pupil"></div><div class="shine"></div></div>
-            <div class="r-eye right"><div class="pupil"></div><div class="shine"></div></div>
+            <div class="r-eye left">
+              <div class="pupil"></div>
+              <div class="shine"></div>
+            </div>
+            <div class="r-eye right">
+              <div class="pupil"></div>
+              <div class="shine"></div>
+            </div>
             <div class="r-blush left"></div>
             <div class="r-blush right"></div>
             <div class="r-mouth"></div>
           </div>
-          <div class="r-body"><div class="r-heart">♥</div></div>
+          <div class="r-body">
+            <div class="r-heart">♥</div>
+          </div>
           <div class="r-arm left-arm"></div>
           <div class="r-arm right-arm"></div>
           <div class="r-leg left-leg"></div>
           <div class="r-leg right-leg"></div>
         </div>
 
-        <!-- Dynamic containers -->
-        <div id="parts-container"></div>
+        <div id="bolts-container"></div>
         <div id="friends-container"></div>
         <div id="effects-container"></div>
+      </div>
+
+      <!-- Level banner -->
+      <div id="level-banner" class="hidden">
+        <div class="level-banner-content">
+          <h2 id="level-banner-title"></h2>
+          <p id="level-banner-subtitle"></p>
+        </div>
+      </div>
+
+      <!-- Gate progress indicator -->
+      <div id="gate-progress" class="gate-progress">
+        <div class="gate-dot" id="gate-dot-0">🔒</div>
+        <div class="gate-connector"></div>
+        <div class="gate-dot" id="gate-dot-1">🔒</div>
+        <div class="gate-connector"></div>
+        <div class="gate-dot" id="gate-dot-2">🔒</div>
+        <div class="gate-connector"></div>
+        <div class="gate-dot gate-dot-end" id="gate-dot-station">🤖</div>
       </div>
 
       <!-- Arrow hints -->
@@ -152,19 +189,15 @@
       <div class="explore-arrow right-arrow hidden" id="arrow-right">▶</div>
     </div>
 
-    <!-- ===== BUILD PANEL ===== -->
-    <div id="build-panel" class="hidden">
-      <div class="panel-overlay"></div>
-      <div class="panel-content">
-        <button id="close-panel-btn" class="panel-close">✕</button>
-        <h2 id="machine-name">Machine Name</h2>
-        <p id="machine-desc" class="machine-desc"></p>
-        <div id="blueprint-display" class="blueprint-box"></div>
-        <div id="parts-needed" class="parts-grid"></div>
-        <button id="build-btn" class="btn-glow build-btn" disabled>
-          <span>🔨 Build Machine</span>
-        </button>
-        <p class="panel-hint" id="panel-hint">Collect parts from the workshop!</p>
+    <!-- ===== LEVEL TRANSITION ===== -->
+    <div id="level-transition" class="hidden">
+      <div class="transition-overlay"></div>
+      <div class="transition-content">
+        <h2 id="transition-title" class="transition-title">Floor Complete!</h2>
+        <div id="transition-robot" class="transition-robot-display"></div>
+        <p id="transition-robot-name" class="transition-robot-name"></p>
+        <p id="transition-robot-story" class="transition-robot-story"></p>
+        <p class="transition-next">Next floor loading...</p>
       </div>
     </div>
 
@@ -172,38 +205,48 @@
     <div id="game-over-screen" class="hidden">
       <div class="gameover-overlay"></div>
       <div class="gameover-content">
-        <h1 class="gameover-title">Time's Up!</h1>
-        <div class="gameover-bolt">
-          <div class="robot-char small-robot">
-            <div class="antenna"><div class="antenna-stick"></div><div class="antenna-ball"></div></div>
-            <div class="r-head">
-              <div class="r-eye left"><div class="pupil"></div><div class="shine"></div></div>
-              <div class="r-eye right"><div class="pupil"></div><div class="shine"></div></div>
-              <div class="r-blush left"></div>
-              <div class="r-blush right"></div>
-              <div class="r-mouth smile"></div>
-            </div>
-            <div class="r-body"><div class="r-heart">♥</div></div>
-            <div class="r-arm left-arm wave"></div>
-            <div class="r-arm right-arm"></div>
-            <div class="r-leg left-leg"></div>
-            <div class="r-leg right-leg"></div>
-          </div>
-        </div>
+        <h1 class="gameover-title" id="gameover-title">Time's Up!</h1>
         <div id="star-rating" class="star-rating"></div>
         <div class="score-reveal">
           <div class="score-label">Final Score</div>
           <div id="final-score" class="final-score-num">0</div>
         </div>
-        <div id="final-friends-text" class="friends-text"></div>
-        <div id="friends-gallery" class="friends-gallery"></div>
-        <button id="replay-btn" class="btn-glow">
-          <span>🔄 Play Again!</span>
-        </button>
+        <div class="gameover-stats">
+          <div class="stat-item">
+            <span class="stat-icon">🏭</span>
+            <span id="stat-floors" class="stat-value">0</span>
+            <span class="stat-label">Floors</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-icon">🔩</span>
+            <span id="stat-bolts" class="stat-value">0</span>
+            <span class="stat-label">Bolts</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-icon">🤖</span>
+            <span id="stat-robots" class="stat-value">0</span>
+            <span class="stat-label">Robots</span>
+          </div>
+        </div>
+        <h3 class="gallery-title">🤖 Discovered Robots</h3>
+        <div id="robots-gallery" class="robots-gallery"></div>
+        <div class="gameover-buttons">
+          <button id="download-btn" class="btn-glow btn-download">
+            <span>📸 Download Scorecard</span>
+          </button>
+          <button id="replay-btn" class="btn-glow">
+            <span>🔄 Play Again!</span>
+          </button>
+        </div>
       </div>
     </div>
+
+    <!-- Hidden canvas for scorecard rendering -->
+    <canvas id="scorecard-canvas" width="800" height="1200" style="display:none;"></canvas>
+
   </div>
 
   <script src="js/game.js"></script>
 </body>
+
 </html>

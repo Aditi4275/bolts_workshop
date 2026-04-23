@@ -1,41 +1,36 @@
-#                                                       ⚡ Bolt's Workshop
-
-**A lonely robot. A forgotten workshop. A race against time to make friends.**
-
-Bolt wakes up alone in a dusty old workshop. But hidden among the rusty shelves are parts to build machines — machines that can create *robot friends*. You have **2 minutes** before the emergency power runs out. How many friends can you make?
-
-## 🎮 Play
+# ⚡ Bolt's Workshop — 8 Floors of Robot Friends!
 
 👉 **[Play Now](https://aditi4275.github.io/bolts_workshop/)** 
 
-## ✨ How It Works
+**Bolt's Workshop** is a cute, anime-inspired 2D web game built purely with HTML, CSS, and JavaScript. Guide a lone robot named Bolt through 8 unique workshop floors, collect bolts, unlock gates, and build robot friends before time runs out!
 
-1. **🖱️ Click** to move Bolt around the workshop
-2. **⚙️ Collect** scattered parts (gears, circuits, motors, lenses)
-3. **🔧 Build** machines from blueprints at build stations
-4. **🤖 Watch** your machines produce adorable robot friends
-5. **🗺️ Unlock** new zones when a machine hits capacity
-6. **⏱️ Beat the clock** — score as many points as you can in 2 minutes!
+---
 
-## 🏗️ Machines
+## ✨ Features
 
-| Machine | Parts Needed | Robots Made | Points |
-|---------|-------------|-------------|--------|
-| ⚡ Spark Welder | 3 ⚙️ + 2 🔩 | 3 bots | 10 each |
-| 🌀 Gyro Assembler | 2 ⚡ + 2 🔋 + 1 ⚙️ | 4 bots | 20 each |
-| 💎 Quantum Fabricator | 2 🔮 + 2 ⚡ + 1 🔋 | 5 bots | 50 each |
+* **🏭 8 Unique Themed Floors:** Progress from the Dusty Basement all the way up to the Core Chamber. Each floor features its own color palette, custom CSS decorations (cobwebs, steam vents, neon circuits, magma, etc.), and custom audio profiles.
+* **🔩 Resource Management:** Collect wandering bolts to unlock gates and power up the assembly stations. Reach new bolt milestones (10, 25, 50...) to earn bonus points!
+* **🤖 Robot Discovery:** Build distinct robot friends on every floor — each with their own unique anime-inspired palette and backstory.
+* **🔮 6 Secret Robots & Powers:** Complete special hidden conditions to unlock legendary robots like *TimeLord*, *Chronos*, *Turbo*, and *Prism*. Unlocking them grants Bolt powerful passive & active abilities!
+* **📟 Active Powers HUD:** Whenever you equip consecutive powers, a sleek transparent HUD panel slides in to remind you what powers you possess.
+* **📸 End-game Scorecard:** Run out of time? The game generates a customized dynamic Scorecard displaying your metrics and robot gallery, which you can download as a `.png` right to your device!
+* **📱 Mobile Friendly:** Fully responsive design with intuitive tap-to-move controls optimized for mobile browsers.
+* **🎵 Dynamic Audio Tracker:** Featuring low-latency Web Audio API synthesis that escalates in tempo and pitch during the final 10 seconds of gameplay to create an exciting feeling of urgency.
 
-## 🛠️ Tech
-- 🎨 CSS-drawn robot characters (no images!)
-- 🔊 Web Audio API synthesized sound effects
-- ✨ Anime-inspired visuals with particle effects
-- 📱 Responsive design
 
-## 📂 Structure
 
+
+## 🎮 Controls
+* **Mouse/Touch:** Click or tap anywhere in the viewport to move Bolt. Click on gates to unlock them and stations to build robots.
+* **Keyboard:** Use `Arrow Left` and `Arrow Right` (or `A` and `D`) to move. Press `Space` or `Enter` when near a prompt to trigger actions.
+
+## 📂 Project Structure
+
+```text
+bolts_workshop/
+├── index.html        # Main standard entry point (HUD, Modals, Canvases)
+├── css/
+│   └── style.css     # CSS Variables logic, 8 thematic configurations, robot skins
+└── js/
+    └── game.js       # Core vanilla engine, Web Audio API, progression logic
 ```
-├── index.html       # Game page
-├── css/style.css    # Design system & animations
-└── js/game.js       # Game engine
-```
-
