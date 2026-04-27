@@ -1,4 +1,4 @@
-# ⚡ Bolt's Workshop — 8 Floors of Robot Friends!
+# ⚡ Bolt's Workshop
 
 👉 **[Play Now](https://aditi4275.github.io/bolts_workshop/)** 
 
